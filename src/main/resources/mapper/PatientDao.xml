@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--sql mapper for PatientDao interface-->
+<mapper namespace="com.health.dao.PatientDao">
+
+    <sql id="columns">patient_id, pressure, breath, temperature, pressure_high,
+    pressure_low, breath_high, breath_low, temperature_high, temperature_low, frequency</sql>
+
+    <select id="queryById" parameterType="long" resultType="Patient">
+        SELECT <include refid="columns"/>
+        from patient
+        WHERE patient_id = #{patientId}
+    </select>
+
+    <select id="queryAll" resultType="Patient">
+        SELECT <include refid="columns"/>
+        from patient
+        ORDER BY  patient_id
+    </select>
+
+
+    <insert id="insertPatient" parameterType="Patient">
+        INSERT INTO patient (patient_id, pressure, breath, temperature, pressure_high,pressure_low,
+        breath_high, breath_low, temperature_high, temperature_low, frequency)
+        VALUES (#{patientId}, 0.00, 0.00, 0.00, #{pressureHigh}, #{pressureLow}, #{breathHigh}, #{breathLow},
+        #{temperatureHigh}, #{temperatureLow}, #{frequency})
+    </insert>
+
+    <update id="setFrequency">
+        UPDATE patient set frequency = #{frequency}
+        WHERE patient_id = #{patientId}
+    </update>
+
+    <update id="updateHealth">
+        UPDATE patient set pressure = #{pressure}, breath = #{breath}, temperature = #{temperature}
+        WHERE patient_id = #{patientId}
+    </update>
+
+    <update id="updateBound" parameterType="Patient">
+        UPDATE patient
+        <set>
+            <if test="pressureHigh != 0.0">pressure_high = #{pressureHigh},</if>
+            <if test="pressureLow != 0.0">pressure_low = #{pressureLow},</if>
+            <if test="breathHigh != 0.0">breath_high = #{breathHigh},</if>
+            <if test="breathLow != 0.0">breath_low = #{breathLow},</if>
+            <if test="temperatureHigh != 0.0">temperature_high = #{temperatureHigh},</if>
+            <if test="temperatureLow != 0.0">temperature_low=#{temperatureLow}</if>
+        </set>
+        WHERE patient_id = #{patientId}
+    </update>
+
+</mapper>

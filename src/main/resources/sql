@@ -1,0 +1,15 @@
+CREATE TABLE `patient` (
+  `patient_id` int(9) NOT NULL AUTO_INCREMENT,
+  `pressure` DOUBLE(6,3) NOT NULL,
+  `breath` DOUBLE(6,3) NOT NULL,
+  `temperature` DOUBLE(6,3) NOT NULL,
+  `pressure_high` DOUBLE(6,3) NOT NULL,
+  `pressure_low` DOUBLE(6,3) NOT NULL,
+  `breath_high` DOUBLE(6,3) NOT NULL,
+  `breath_low` DOUBLE(6,3) NOT NULL,
+  `temperature_high` DOUBLE(6,3) NOT NULL,
+  `temperature_low` DOUBLE(6,3) NOT NULL,
+  `frequency` int(10) DEFAULT NULL,
+  PRIMARY KEY (`patient_id`),
+  KEY `monitor` (`frequency`)
+) ENGINE=InnoDB AUTO_INCREMENT=100000000 DEFAULT CHARSET=utf8;

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--sql mapper for PatientDao interface-->
+<mapper namespace="com.health.dao.MonitorDao">
+
+    <sql id="columns">patient_id</sql>
+
+    <select id="queryById" parameterType="long" resultType="Monitor">
+        SELECT monitor_id, patient_id, address, port, status
+        from monitor
+        WHERE patient_id = #{patientId}
+    </select>
+
+    <update id="updatePatientId" parameterType="long">
+        UPDATE monitor set patient_id = #{newPatientId}
+        WHERE monitor_id = #{monitorId}
+    </update>
+
+    <select id="queryFreeMonitor" resultType="Monitor">
+        SELECT monitor_id, patient_id, address, port, status
+        from monitor
+        WHERE status=0 AND patient_id IS NULL
+        limit 1
+    </select>
+
+    <update id="updateMonitor" parameterType="Monitor">
+        UPDATE monitor
+        <set>
+            <if test="patientId != null">patient_id = #{patientId},</if>
+            <if test="status != null">status=#{status}</if>
+        </set>
+        where monitor_id = #{monitorId}
+    </update>
+
+
+</mapper>
